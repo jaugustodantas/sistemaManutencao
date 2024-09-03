@@ -1,0 +1,183 @@
+{% extends"padrao.html" %}
+{% block conteudo %}
+<script>
+    function abrirCaixas(){
+        const varTesteTroca = document.getElementById('houveTroca');
+        const varItem = document.getElementById('blocoDePecas');
+        if (varTesteTroca.value === 'Sim'){
+            varItem.style.display = 'block';
+        }else{
+            varItem.style.display = 'none';
+        }
+    }
+    function checkInputs(rowIndex) {
+        const nomePeca = document.querySelector(`input[name="nomePeca${rowIndex}"]`).value;
+        const qtdPeca = document.querySelector(`input[name="qtdPeca${rowIndex}"]`).value;
+
+        if (nomePeca && qtdPeca) {
+            const nextRow = document.getElementById(`linha${rowIndex + 1}`);
+            if (nextRow) {
+                nextRow.classList.remove('hidden');
+            }
+        }
+    }
+</script>
+<form method="post" action="/fecharos">    
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+            text-align: center;
+        }
+        th, td {
+            width: 150px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>   
+    <fieldset>
+    </fieldset>
+        <div class="mb-3">
+            <label for="txtIdOs">nome</label>
+            <input type="hidden" name="txtIdOs" id="txtIdOs" value="{{os.id}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>tipo manutencao</label>
+            <p>{{os.tipomanutencao}}</p>
+        </div>
+        <div class="=mb-3">
+            <label>emissor</label>
+            <p>{{os.emissor}}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>setor</label>
+            <p>{{os.setor}}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>maquina</label>
+            <p>{{os.maquina}}</p>        
+        </div>    
+        <div class="=mb-3">
+            <label>nivel de urgencia</label>
+            <p>{{os.nivelurgencia}}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>motivo urgencia</label>
+            <p>{{os.motivourgencia }}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>descricao do problema</label>
+            <p>{{os.descricaodoproblema}}</p>        
+        </div>
+        <div class="mb-3">
+            <label for="comentarios">descricao do servico</label>
+            <textarea id="descricaoServico" name="descricaoServico" rows="4" cols="50" class="form-control">
+            </textarea>
+        </div>           
+        <div class="mb-3">
+            <label for="">Houve troca de itens?</label>
+            <select id="houveTroca" name="houveTroca" onchange="abrirCaixas()">
+            <option value="Não">Não</option>
+            <option value="Sim">Sim</option>
+        </select>
+        <div id="blocoDePecas" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Peça trocada</th>
+                        <th>Quantidade</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr id="linha1">
+                        <td><input type="text" name="nomePeca1" oninput="checkInputs(1)"></td>
+                        <td><input type="number" name="qtdPeca1" oninput="checkInputs(1)"></td>
+                    </tr>
+                    <tr id="linha2" class="hidden">
+                        <td><input type="text" name="nomePeca2" oninput="checkInputs(2)"></td>
+                        <td><input type="number" name="qtdPeca2" oninput="checkInputs(2)"></td>
+                    </tr>
+                    <tr id="linha3" class="hidden">
+                        <td><input type="text" name="nomePeca3" oninput="checkInputs(3)"></td>
+                        <td><input type="number" name="qtdPeca3" oninput="checkInputs(3)"></td>
+                    </tr> 
+                    <tr id="linha4" class="hidden">
+                        <td><input type="text" name="nomePeca4" oninput="checkInputs(4)"></td>
+                        <td><input type="number" name="qtdPeca4" oninput="checkInputs(4)"></td>
+                    </tr> 
+                    <tr id="linha5" class="hidden">
+                        <td><input type="text" name="nomePeca5" oninput="checkInputs(5)"></td>
+                        <td><input type="number" name="qtdPeca5" oninput="checkInputs(5)"></td>
+                    </tr> 
+                    <tr id="linha6" class="hidden">
+                        <td><input type="text" name="nomePeca6" oninput="checkInputs(6)"></td>
+                        <td><input type="number" name="qtdPeca6" oninput="checkInputs(6)"></td>
+                    </tr> 
+                    <tr id="linha7" class="hidden">
+                        <td><input type="text" name="nomePeca7" oninput="checkInputs(7)"></td>
+                        <td><input type="number" name="qtdPeca7" oninput="checkInputs(7)"></td>
+                    </tr> 
+                    <tr id="linha8" class="hidden">
+                        <td><input type="text" name="nomePeca8" oninput="checkInputs(8)"></td>
+                        <td><input type="number" name="qtdPeca8" oninput="checkInputs(8)"></td>
+                    </tr> 
+                    <tr id="linha9" class="hidden">
+                        <td><input type="text" name="nomePeca9" oninput="checkInputs(9)"></td>
+                        <td><input type="number" name="qtdPeca9" oninput="checkInputs(9)"></td>
+                    </tr> 
+                    <tr id="linha10" class="hidden">
+                        <td><input type="text" name="nomePeca10" oninput="checkInputs(10)"></td>
+                        <td><input type="number" name="qtdPeca10" oninput="checkInputs(10)">
+                    </tr> 
+                    <tr id="linha11" class="hidden">
+                        <td><input type="text" name="nomePeca11" oninput="checkInputs(11)"></td>
+                        <td><input type="number" name="qtdPeca11" oninput="checkInputs(11)"></td>
+                    </tr> 
+                    <tr id="linha12" class="hidden">
+                        <td><input type="text" name="nomePeca12" oninput="checkInputs(12)"></td>
+                        <td><input type="number" name="qtdPeca12" oninput="checkInputs(12)"></td>
+                    </tr> 
+                    <tr id="linha13" class="hidden">
+                        <td><input type="text" name="nomePeca13" oninput="checkInputs(13)"></td>
+                        <td><input type="number" name="qtdPeca13" oninput="checkInputs(13)"></td>
+                    </tr> 
+                    <tr id="linha14" class="hidden">
+                        <td><input type="text" name="nomePeca14" oninput="checkInputs(14)"></td>
+                        <td><input type="number" name="qtdPeca14" oninput="checkInputs(14)"></td>
+                    </tr> 
+                    <tr id="linha15" class="hidden">
+                        <td><input type="text" name="nomePeca15" oninput="checkInputs(15)"></td>
+                        <td><input type="number" name="qtdPeca15" oninput="checkInputs(15)"></td>
+                    </tr> 
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <div class="mb-3">
+            <label for="">Houve parada na operacao?</label>
+            <select id="houveParada" name="houveParada">
+            <option value="Não">Não</option>
+            <option value="Sim">Sim</option>
+        </select>
+        </div>      
+        <div class="mb-3">
+            <label for="">Data e hora inicio manutencao</label>
+            <input type="text" name="inicioManutencao" id="inicioManutencao" class="form-control">
+        </div>   
+        <div class="mb-3">
+            <label for="">Data e hora fim manutencao</label>
+            <input type="text" name="fimManutencao" id="fimManutencao" class="form-control">
+        </div>     
+        <div class="mb-3">
+            <label for="">Nome do Manutentor</label>
+            <input type="text" name="nomeManutentor" id="nomeManutentor" class="form-control">
+        </div>  
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Fechar os</button> 
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

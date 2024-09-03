@@ -1,0 +1,53 @@
+import webbrowser
+from flask  import  Flask, render_template, request,redirect,session,flash
+from flask_sqlalchemy import SQLAlchemy
+
+
+app = Flask(__name__)
+app.secret_key = 'TESTE'
+app.config['SQLALCHEMY_DATABASE_URI '] = \
+    "{SGBD}://{USUARIO}:{SENHA}@{SERVIDOR}/{database}".format(
+            SGBD = 'mysql+mysqlconnector',
+            USUARIO = 'root',
+            SENHA = 'senha',
+            SERVIDOR ='localhost',
+            database = 'manutencaodb'
+        )
+db= SQLAlchemy(app)
+
+
+class Usuario(db.model):
+    id = db.Column(db.integer,primary_key= True,autoincrement = True)
+    email = db.Column(db.String(50))
+    cargo = db.Column(db.String(50))
+    senha = db.Column(db.String(50))
+    nome = db.Column(db.String(50))
+    def __repr__(self):
+        return '<Name %r>' %self.name
+            
+
+@app.route('/login')
+def abrirlistaos(): 
+    return render_template('login.html')    
+
+@app.route('/autenticar', Methods=['POST'])    
+def autenticador ():
+    usuario = Usuario.query.filterby(email=request.form['txtUser']).first()
+    if usuario:
+        if usuario.senha == request.form['txrPswd']:
+            return redirect('/cadastro')
+
+@app.route('/cadastro')
+def cadastrarNovoUsuario ():
+    return render_template('cadastrouser.html')
+
+@app.route('/logout')
+def logOut():
+    return redirect('/login')
+
+
+if __name__ == '__main__':
+    webbrowser.open('http://127.0.0.1:5000/login')
+    app.run(debug=True)
+
+

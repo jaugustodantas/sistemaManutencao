@@ -1,0 +1,34 @@
+{% extends"padrao.html" %}
+{% block conteudo %}
+<table class="table table-hover">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Número da OS</th>
+            <th>Setor</th>
+            <th>Nível urgência</th>
+            <th>Motivo urgência</th>
+            <th>Visualizar</th>
+            {% if session.get('cargo') == 'Gestor' or session.get('cargo') == 'Manutentor' %}
+            <th>Ecnerrar</th>
+            {% endif %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in itens %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.setor}}</td>
+            <td>{{item.nivelurgencia}}</td>
+            <td>{{item.motivourgencia}}</td>
+            <td><a href="{{url_for('vizualizar_os',idv = item.id,modo = 1)}}">Visualizar</a></td>
+            {% if session.get('cargo') == 'Gestor' or session.get('cargo') == 'Manutentor' %}
+            <td><a href="{{url_for('vizualizar_os',idv = item.id,modo = 2)}}">Encerrar</a></td>
+            {% endif %}
+            <!-- <td><a href="">Encerrar</a></td> -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,13 @@
+inicio fim trabalho  (tempo execucao) (+ - ok precisa validar)
+para encerrar visualizar + por o que foi feito (ok)
+custo (?)
+gestão estoque (tentar por aviso por e-mail)
+atende tipo abertura os ok
+filtro os encerrada ok
+search os por numero 
+bloquear por campos ( mascaras )
+por questão de prazo ( ver com Luanna Parametros), prazo entra na lista  ( prazo estimado = data bertura + regra - hoje)
+imprimir as os  ok
+colocar bloqueio de usuario logado ok
+separar arquivos
+

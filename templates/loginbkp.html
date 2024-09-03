@@ -1,0 +1,19 @@
+{% extends"padrao.html" %}
+{% block conteudo %}
+
+
+<form method="post" action="/autenticar">       
+    <fieldset>
+        <legend>Área de login</legend>
+        <div class="mb-3">
+            <label for="txtUser">usuario</label>
+            <input type="text" name="txtUser" id="txtUser" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for ="txtPswd">senha</label>
+            <input type="password" name="txtPswd" id="txtPswd" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">entrar</button>
+    </fieldset>
+</form>
+{% endblock %}

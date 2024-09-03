@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sistema Manutenção</title>
+        <link rel = "stylesheet" href="{{url_for('static', filename ='bootstrap.css')}}"/>   
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+            <a class="navbar-brand">Aprendendo</a>
+            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> -->
+        </nav>
+        <div class="container">
+            <h2>{{titulo}}</h2>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                        <li class="alert alert-danger">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
+                <form method="post" action="/autenticar">       
+                    <fieldset>
+                        <legend>Área de login</legend>
+                        <div class="mb-3">
+                            <label for="txtUser">usuario</label>
+                            <input type="text" name="txtUser" id="txtUser" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for ="txtPswd">senha</label>
+                            <input type="password" name="txtPswd" id="txtPswd" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">entrar</button>
+                    </fieldset>
+                </form>
+        </div>
+    </body>
+
+    </html>

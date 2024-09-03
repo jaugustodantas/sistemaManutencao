@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sistema Manutenção</title>
+        <link rel = "stylesheet" href="{{url_for('static', filename ='bootstrap.css')}}"/>   
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+            <a class="navbar-brand">Aprendendo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/listaos">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/aberturaos">Abrir OS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/listaos">Lista das OS</a>
+                </li>
+                {%if session.get('cargo') == 'Gestor'%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/cadastro">Cadastrar Usuario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/listausuario"> Lista de usuários </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Sair</a>
+                </li>
+            </div>
+            </div>
+        </nav>
+        <div class="container">
+            <h2>{{titulo}}</h2>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                        <li class="alert alert-danger">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
+                {% block conteudo%}
+                {% endblock %}
+
+        </div>
+    </body>
+
+    </html>

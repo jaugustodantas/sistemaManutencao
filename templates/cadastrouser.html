@@ -1,0 +1,34 @@
+{% extends"padrao.html" %}
+{% block conteudo %}
+
+
+<form method="post" action="/cadastrousuario">       
+    <fieldset>
+        <legend>Área de login</legend>
+        <div class="mb-3">
+            <label for="txtNome">nome</label>
+            <input type="text" name="txtNome" id="txtNome" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for ="txtEmail">e-mail</label>
+            <input type="text" name="txtEmail" id="txtEmail" class="form-control">
+        </div>
+        <div class="mb-3">
+            <select id="grauUsuario" name="grauUsuario">
+                <option value="Operador">Operador</option>
+                <option value="Manutentor">Manutentor</option>
+                <option value="Gestor">Gestor</option>
+              </select>
+        </div>
+        <div class="mb-3">
+            <label for ="txtSenha">senha</label>
+            <input type="password" name="txtSenha" id="txtSenha" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for ="txtConfirmarSenha">confirmar senha</label>
+            <input type="password" name="txtConfirmarSenha" id="txtConfirmarSenha" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">cadastrar</button>
+    </fieldset>
+</form>
+{% endblock %}

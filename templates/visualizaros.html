@@ -1,0 +1,52 @@
+{% extends"padrao.html" %}
+{% block conteudo %}
+
+<style>
+    @media print {
+        /* Estilos específicos para impressão */
+        .no-print {
+            display: none;
+        }
+    }
+</style>
+
+<form >       
+    <fieldset>
+        <div class="mb-3">
+            <label>Numero Os</label>
+            <p>{{os.id}}</p>
+        </div>
+        <div class="mb-3">
+            <label>tipo manutencao</label>
+            <p>{{os.tipomanutencao}}</p>
+        </div>
+        <div class="=mb-3">
+            <label>emissor</label>
+            <p>{{usr.nome}}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>setor</label>
+            <p>{{os.setor}}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>maquina</label>
+            <p>{{os.maquina}}</p>        
+        </div>    
+        <div class="=mb-3">
+            <label>nivel de urgencia</label>
+            <p>{{os.nivelurgencia}}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>motivo urgencia</label>
+            <p>{{os.motivourgencia }}</p>        
+        </div>  
+        <div class="=mb-3">
+            <label>descricao</label>
+            <p>{{os.descricaodoproblema}}</p>        
+        </div>  
+        <div class="mb-3">
+            <button onclick="window.print()" class="no-print">Imprimir</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

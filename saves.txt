@@ -1,0 +1,43 @@
+import csv
+from flask import Flask, render_template, request, make_response
+from your_app import db
+from your_app.models import SuaTabela # Importe seu modelo aqui
+
+@app.route('/exportar_csv')
+def exportar_csv():
+    # Consultar os dados do banco de dados
+    registros = SuaTabela.query.all()
+
+    # Criar a resposta como um arquivo CSV
+    si = StringIO()
+    cw = csv.writer(si)
+
+    # Escreva o cabeçalho do CSV (substitua 'coluna1', 'coluna2', etc. pelos nomes das suas colunas)
+    cw.writerow(['coluna1', 'coluna2', 'coluna3'])
+
+    # Escreva os dados das linhas
+    for registro in registros:
+        cw.writerow([registro.coluna1, registro.coluna2, registro.coluna3])
+
+    # Configurar a resposta para download
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    output.headers["Content-type"] = "text/csv"
+    
+    return output
+
+
+
+
+<a href="{{ url_for('exportar_csv') }}" class="btn btn-primary">Exportar CSV</a>
+
+
+
+from your_app import db
+from your_app.models import SuaTabela
+
+# Obter os nomes das colunas
+nomes_colunas = SuaTabela.__table__.columns.keys()
+
+# Exibir os nomes das colunas
+print(nomes_colunas)
