@@ -1,8 +1,9 @@
-from flask import Flask, render_template,redirect,request,session,url_for
+from flask import Flask, render_template,redirect,request,session,url_for,make_response
 import webbrowser
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-
+import csv
+from io import StringIO
 
 app = Flask(__name__)
 app.secret_key ='TESTE'
@@ -210,6 +211,33 @@ def submit_form():
     osFinalizada.datahorainicio = request.form["inicioManutencao"]
     db.session.commit()
     return redirect('/listaos')
+
+#------------------------------------------------export
+@app.route('/exportCSV')
+def exportarTabela():
+    tabelaexp = Tabelaos.query.all()
+    si = StringIO()
+    cw = csv.writer(si)
+    nomeColunas = Tabelaos.__table__.columns.keys()
+    cw.writerow(nomeColunas)    
+    for os in tabelaexp:
+        cw.writerow([
+            os.id, os.tipomanutencao, os.setor, os.datahoraabertura, os.maquina,
+            os.emissor, os.nivelurgencia, os.motivourgencia, os.tipo,
+            os.descricaodoproblema, os.datahoraexecucao, os.descricaoservico,
+            os.trocadeitens, os.nomeitem1, os.nomeitem2, os.nomeitem3, os.nomeitem4,
+            os.nomeitem5, os.nomeitem6, os.nomeitem7, os.nomeitem8, os.nomeitem9,
+            os.nomeitem10, os.nomeitem11, os.nomeitem12, os.nomeitem13, os.nomeitem14,
+            os.nomeitem15, os.qtditem1, os.qtditem2, os.qtditem3, os.qtditem4,
+            os.qtditem5, os.qtditem6, os.qtditem7, os.qtditem8, os.qtditem9,
+            os.qtditem10, os.qtditem11, os.qtditem12, os.qtditem13, os.qtditem14,
+            os.qtditem15, os.houveparada, os.manutentor, os.finalizada, os.datahorainicio
+        ])
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    output.headers["Content-type"] = "text/csv"
+    
+    return output
 
 if __name__ == '__main__':
     webbrowser.open('http://127.0.0.1:5000/login')
