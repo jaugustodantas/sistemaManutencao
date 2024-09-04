@@ -115,7 +115,7 @@ def registroUsuarioDb ():
     eemail = request.form["txtEmail"]
     cargo = request.form["grauUsuario"]
     senha = request.form["txtSenha"]
-    nome = request.form["txtNome"]
+    nome = request.form["txtNome"]    #coletar a senha do campo de confirmação para garantir que são iguais
     testeRepetido = Usuarios.query.filter_by(email=eemail).first()
     if testeRepetido:
         return render_template('usuariojaexiste.html')
@@ -138,9 +138,24 @@ def vizualizar_usr(idv,modo):
         db.session.commit()
         return redirect('/listausuario')
     elif modo == 2:
-        searchos = Tabelaos.query.filter_by(id=idv).first()
-        return render_template ('fecharos.html', os=searchos)
-
+        usu = Usuarios.query.filter_by(id=idv).first()
+        return render_template ('edituser.html', us=usu)
+    
+@app.route('/editarusuario',methods=['POST',])
+def modificarUsuario():
+    eemail = request.form["txtEmail"]
+    cargo = request.form["grauUsuario"]
+    senha = request.form["txtSenha"] #coletar a senha do campo de confirmação para garantir que são iguais
+    nome = request.form["txtNome"]
+    user_id = request.form["userId"]
+    usuarioEditado = Usuarios.query.filter_by(id=user_id).first()
+    if usuarioEditado:
+        usuarioEditado.nome = nome
+        usuarioEditado.email=eemail
+        usuarioEditado.cargo = cargo
+        usuarioEditado.senha= senha
+        db.session.commit()
+    return redirect('/listausuario')
 #---------------------------------------------------------------------------------------------------
 @app.route('/aberturaos')
 def aberturanovaos ():
