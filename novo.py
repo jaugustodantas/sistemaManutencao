@@ -6,14 +6,7 @@ import csv
 from io import StringIO
 
 app = Flask(__name__)
-app.secret_key ='TESTE'
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-    "{SGBD}://{USUARIO}:{SENHA}@{SERVIDOR}/{database}".format(
-            SGBD = 'mysql+mysqlconnector',
-            USUARIO = 'root',
-            SENHA = 'senha',
-            SERVIDOR ='localhost',
-            database = 'manutencaodb')
+app.config.from_pyfile('config.py')
 db= SQLAlchemy(app)
 
 class Tabelaos(db.Model):
