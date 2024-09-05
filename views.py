@@ -4,12 +4,11 @@ from datetime import datetime
 from novo import app,db
 import csv
 from io import StringIO
-
+#relacao login ----------------------------------------------------------------------------
 def testeUsuario():
     if 'username' not in session or session['username'] == None:
         return False
     return True
-
 
 @app.route('/autenticar', methods =['POST',])
 def autenticador ():
@@ -19,6 +18,7 @@ def autenticador ():
             session['username'] = request.form['txtUser']
             session['cargo'] = usuario.cargo
             return redirect('/listaos')
+    return redirect('/login')
 
 @app.route('/login')
 def direcionarparalogin(): 
@@ -27,7 +27,7 @@ def direcionarparalogin():
 @app.route('/logout')
 def realizarlogout():
     session.pop('username',None) 
-    return redirect('/login')       
+    return redirect('/login')   
 # ------------------------------------ relacao de usuarios --------------------------------
 @app.route('/cadastro')
 def cadastrarNovoUsuario ():
