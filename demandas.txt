@@ -9,5 +9,7 @@ bloquear por campos ( mascaras )
 por questão de prazo ( ver com Luanna Parametros), prazo entra na lista  ( prazo estimado = data bertura + regra - hoje)
 imprimir as os  ok
 colocar bloqueio de usuario logado ok
-separar arquivos
+separar arquivos ok
 
+Colocar mais pessoas para fechar manutenção;
+Lista por setores om opção outros para possiveis serviços sem tag;
