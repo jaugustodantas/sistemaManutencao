@@ -1,7 +1,7 @@
 from flask import Flask, render_template,redirect,request,session,url_for,make_response
 import webbrowser
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
+from flask import SQLAlchemy
 import csv
 from io import StringIO
 
