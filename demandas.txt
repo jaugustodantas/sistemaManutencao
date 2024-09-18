@@ -5,11 +5,11 @@ gestão estoque (tentar por aviso por e-mail)
 atende tipo abertura os ok
 filtro os encerrada ok
 search os por numero 
-bloquear por campos ( mascaras )
+bloquear por campos ( mascaras ) ok
 por questão de prazo ( ver com Luanna Parametros), prazo entra na lista  ( prazo estimado = data bertura + regra - hoje)
 imprimir as os  ok
 colocar bloqueio de usuario logado ok
 separar arquivos ok
-
+Preciso (esqueci)
 Colocar mais pessoas para fechar manutenção;
 Lista por setores om opção outros para possiveis serviços sem tag;

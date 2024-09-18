@@ -1,36 +1,49 @@
 {% extends"padrao.html" %}
 {% block conteudo %}
-
+<script>
+    function verificarUrgencia(){
+        const listaUrgencia =document.getElementById("opcoesUrgencia");
+        const blockMotivo = document.getElementById("blocoMotivo");
+        if(listaUrgencia.value === 'naourgente'){
+            blockMotivo.style.display = 'none';
+        }else{
+            blockMotivo.style.display = 'block';
+        }
+    }
+</script>
 
 <form method="post" action="/enviaros">       
     <fieldset>
+        {{form.csrf_token()}}
         <legend>Abertura OS</legend>
         <div class="mb-3">
         <label>tipo manutencao</label>
         <select id="opcoes" name="opcoes">
             <option value="Corretiva">Corretiva</option>
             <option value="Preditiva">Preditiva</option>
-            <option value="Não sei">Não sei</option>
+            <option value="Melhoria">Melhoria</option>
           </select>
         </div>
         <div class="mb-3">
-            <label for="">maquina</label>
-            <input type="text" name="txtMaquina" id="txtMaquina" class="form-control">
+            <!-- maquina -->
+             {{form.nomeMaquina.label}}
+             {{form.nomeMaquina(class="form-control")}}
         </div>
         <div class="mb-3">
-            <label for="">setor</label>
-            <input type="text" name="txtSetor" id="txtSetor" class="form-control">
+            {{form.setor.label}}
+            {{form.setor(class="form-control")}}
         </div>
         <div class="mb-3">
             <label for="">nivel urgencia</label>
-            <select id="opcoesUrgencia" name="opcoesUrgencias">
+            <select id="opcoesUrgencia" name="opcoesUrgencia" onchange="verificarUrgencia()">
+                <option value="naourgente">Sem urgência</option>
                 <option value="deu ruim">deu ruim</option>
                 <option value="rapazzzzz">rapazzz</option>
                 <option value="vixe">vixe</option>
               </select>
         </div>
-        <div class="mb-3">
-            <label for="">motivel urgencia</label>
+        <div id="blocoMotivo" style="display: none">
+            <label for="">motivo urgencia</label>
             <input type="text" name="txtMotivoUrgencia" id="txtMotivoUrgencia" class="form-control">
         </div>
         <div class="mb-3">
@@ -42,13 +55,13 @@
         </select>
         </div>
         <div class="mb-3">
-          <label for="comentarios">descricao do problema</label>
-            <textarea id="descricao" name="descricao" rows="4" cols="50" class="form-control">
-            </textarea>
+            {{form.descricao.label}}
+            {{form.descricao(class="form-control")}}
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary">cadastrar</button> 
+            {{form.enviar(class="btn btn-primary")}}
         </div>
     </fieldset>
 </form>
+
 {% endblock %}

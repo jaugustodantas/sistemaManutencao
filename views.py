@@ -4,6 +4,7 @@ from datetime import datetime
 from novo import app,db
 import csv
 from io import StringIO
+from definicoes import FormularioAbriOs
 #relacao login ----------------------------------------------------------------------------
 def testeUsuario():
     if 'username' not in session or session['username'] == None:
@@ -88,27 +89,30 @@ def modificarUsuario():
 @app.route('/aberturaos')
 def aberturanovaos ():
     if testeUsuario():
-        return render_template('novaos.html')
+        form = FormularioAbriOs()
+        return render_template('novaos.html',form=form)
     return redirect('/login')
 
 @app.route('/enviaros', methods=['POST',])
 def registronovaos():
+    formEntrada = FormularioAbriOs(request.form)
+
     usuario=Usuarios.query.filter_by(email=session['username']).first()
     tipomanutencao = request.form["opcoes"]
-    setor = request.form["txtSetor"]
+    setor = formEntrada.setor.data
     datahoraabertura = datetime.now()
     datahoraabertura = datahoraabertura.strftime("%d/%m/%Y %H:%M")
-    maquina = request.form["txtMaquina"]
+    maquina = formEntrada.nomeMaquina.data
     e = usuario.id
     emissor = e
-    nivelurgencia = request.form["opcoesUrgencias"]
+    nivelurgencia = request.form["opcoesUrgencia"]
     motivourgencia = request.form["txtMotivoUrgencia"]
     tipo = request.form["opcoesManutencao"]
-    descricaodoproblema = request.form["descricao"]
+    descricaodoproblema = formEntrada.descricao.data
     novaOs = Tabelaos(tipomanutencao=tipomanutencao,setor=setor,datahoraabertura =datahoraabertura ,maquina=maquina,emissor=emissor,nivelurgencia=nivelurgencia,motivourgencia=motivourgencia,tipo=tipo,descricaodoproblema =descricaodoproblema) 
     db.session.add(novaOs)
     db.session.commit()
-    return redirect('/aberturaos')
+    return redirect('/listaos')
 
 @app.route('/listaos')
 def enumeraros():
@@ -132,7 +136,6 @@ def vizualizar_os(idv,modo):
 def submit_form():
     idOs = request.form["txtIdOs"]
     osFinalizada = Tabelaos.query.get(idOs) 
-    osFinalizada.datahoraexecucao = request.form["fimManutencao"] 
     osFinalizada.descricaoservico= request.form["descricaoServico"]
     if request.form["houveTroca"] == 'Sim':
         osFinalizada.trocadeitens = 's'
@@ -152,6 +155,9 @@ def submit_form():
     osFinalizada.manutentor = request.form["nomeManutentor"]
     osFinalizada.finalizada = 's'
     osFinalizada.datahorainicio = request.form["inicioManutencao"]
+    iniciomanutencao = request.form["inicioManutencao"]
+    fimdamanutencao = request.form["fimManutencao"] 
+    osFinalizada.datahoraexecucao = request.form["fimManutencao"] 
     db.session.commit()
     return redirect('/listaos')
 
