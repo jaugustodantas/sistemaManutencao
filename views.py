@@ -1,10 +1,10 @@
-from flask import render_template,redirect,request,session,url_for,make_response
+from flask import render_template,redirect,request,session,url_for,make_response,flash
 from models import Usuarios,Tabelaos
 from datetime import datetime
 from novo import app,db
 import csv
 from io import StringIO
-from definicoes import FormularioAbriOs
+from definicoes import FormularioAbriOs,FormularioFecharOs
 #relacao login ----------------------------------------------------------------------------
 def testeUsuario():
     if 'username' not in session or session['username'] == None:
@@ -96,23 +96,26 @@ def aberturanovaos ():
 @app.route('/enviaros', methods=['POST',])
 def registronovaos():
     formEntrada = FormularioAbriOs(request.form)
-
-    usuario=Usuarios.query.filter_by(email=session['username']).first()
-    tipomanutencao = request.form["opcoes"]
-    setor = formEntrada.setor.data
-    datahoraabertura = datetime.now()
-    datahoraabertura = datahoraabertura.strftime("%d/%m/%Y %H:%M")
-    maquina = formEntrada.nomeMaquina.data
-    e = usuario.id
-    emissor = e
-    nivelurgencia = request.form["opcoesUrgencia"]
-    motivourgencia = request.form["txtMotivoUrgencia"]
-    tipo = request.form["opcoesManutencao"]
-    descricaodoproblema = formEntrada.descricao.data
-    novaOs = Tabelaos(tipomanutencao=tipomanutencao,setor=setor,datahoraabertura =datahoraabertura ,maquina=maquina,emissor=emissor,nivelurgencia=nivelurgencia,motivourgencia=motivourgencia,tipo=tipo,descricaodoproblema =descricaodoproblema) 
-    db.session.add(novaOs)
-    db.session.commit()
-    return redirect('/listaos')
+    if formEntrada.validate_on_submit():
+        usuario=Usuarios.query.filter_by(email=session['username']).first()
+        tipomanutencao = request.form["opcoes"]
+        setor = formEntrada.setor.data
+        datahoraabertura = datetime.now()
+        datahoraabertura = datahoraabertura.strftime("%d/%m/%Y %H:%M")
+        maquina = formEntrada.nomeMaquina.data
+        e = usuario.id
+        emissor = e
+        nivelurgencia = request.form["opcoesUrgencia"]
+        motivourgencia = request.form["txtMotivoUrgencia"]
+        tipo = request.form["opcoesManutencao"]
+        descricaodoproblema = formEntrada.descricao.data
+        novaOs = Tabelaos(tipomanutencao=tipomanutencao,setor=setor,datahoraabertura =datahoraabertura ,maquina=maquina,emissor=emissor,nivelurgencia=nivelurgencia,motivourgencia=motivourgencia,tipo=tipo,descricaodoproblema =descricaodoproblema) 
+        db.session.add(novaOs)
+        db.session.commit()
+        flash('os aberta com sucesso', 'success')
+        return redirect('/listaos')
+    flash('houve um erro durante a abertura da os revise as informações e tente novamente', 'error')
+    return('/listaos')
 
 @app.route('/listaos')
 def enumeraros():
@@ -123,6 +126,7 @@ def enumeraros():
 
 @app.route('/vizualizar/<int:idv>/<int:modo>')
 def vizualizar_os(idv,modo):
+    
     if modo == 1:
         searchos = Tabelaos.query.filter_by(id=idv).first()
         idbusr = searchos.emissor
@@ -130,37 +134,49 @@ def vizualizar_os(idv,modo):
         return render_template ('visualizaros.html', os=searchos, usr=usuariosearch)
     elif modo == 2:
         searchos = Tabelaos.query.filter_by(id=idv).first()
-        return render_template ('fecharos.html', os=searchos)
+        form = FormularioFecharOs()
+        return render_template ('fecharos.html',form=form, os=searchos)
 
 @app.route('/fecharos', methods =["POST",])
 def submit_form():
     idOs = request.form["txtIdOs"]
     osFinalizada = Tabelaos.query.get(idOs) 
-    osFinalizada.descricaoservico= request.form["descricaoServico"]
-    if request.form["houveTroca"] == 'Sim':
-        osFinalizada.trocadeitens = 's'
-        for i in range(1,16):
-            nomepeca = f"nomePeca{i}"
-            qtd = f'qtdPeca{i}'
-            if request.form[nomepeca]:
-                setattr(osFinalizada,f"nomeitem{i}", request.form[nomepeca])
-                setattr(osFinalizada,f"qtditem{i}", request.form[qtd])
-    else:
-        osFinalizada.trocadeitens = 'n'
+    formFinalizar = FormularioFecharOs(request.form)
+    if formFinalizar.validate_on_submit():
+        osFinalizada.descricaoservico= formFinalizar.descricaoDoServico.data
+        if request.form["houveTroca"] == 'Sim':
+            osFinalizada.trocadeitens = 's'
+            for i in range(1,16):
+                nomepeca = f"nomePeca{i}"
+                qtd = f'qtdPeca{i}'
+                if request.form[nomepeca]:
+                    setattr(osFinalizada,f"nomeitem{i}", request.form[nomepeca])
+                    setattr(osFinalizada,f"qtditem{i}", request.form[qtd])
+        else:
+            osFinalizada.trocadeitens = 'n'
 
-    if request.form["houveParada"] == "Sim":
-        osFinalizada.houveparada= 's'
-    else:
-        osFinalizada.houveparada= 'n'
-    osFinalizada.manutentor = request.form["nomeManutentor"]
-    osFinalizada.finalizada = 's'
-    osFinalizada.datahorainicio = request.form["inicioManutencao"]
-    iniciomanutencao = request.form["inicioManutencao"]
-    fimdamanutencao = request.form["fimManutencao"] 
-    osFinalizada.datahoraexecucao = request.form["fimManutencao"] 
-    db.session.commit()
+        if request.form["houveParada"] == "Sim":
+            osFinalizada.houveparada= 's'
+        else:
+            osFinalizada.houveparada= 'n'
+        osFinalizada.finalizada = 's'
+        a = formFinalizar.inicioManutencao.data
+        b = formFinalizar.fimManutencao.data
+        if a > b:
+            flash('a data de inicio da manutenção não pode ser maior que a data de fim da manuntenção','error')
+            return redirect('/listaos')
+        a = a.strftime("%d/%m/%Y %H:%M")
+        b = b.strftime("%d/%m/%Y %H:%M")
+        testesDeVariaveis(a,b)
+        osFinalizada.datahorainicio = a
+        osFinalizada.datahoraexecucao = b
+        osFinalizada.manutentor = formFinalizar.manutentor1.data
+        osFinalizada.manutentor2 = formFinalizar.manutentor2.data
+        osFinalizada.manutentor3 = formFinalizar.manutentor3.data
+        db.session.commit()
+        flash('manutenção finalizada com sucesso','success')
+        return redirect('/listaos')
     return redirect('/listaos')
-
 #------------------------------------------------export
 @app.route('/exportCSV')
 def exportarTabela():
@@ -180,10 +196,17 @@ def exportarTabela():
             os.nomeitem15, os.qtditem1, os.qtditem2, os.qtditem3, os.qtditem4,
             os.qtditem5, os.qtditem6, os.qtditem7, os.qtditem8, os.qtditem9,
             os.qtditem10, os.qtditem11, os.qtditem12, os.qtditem13, os.qtditem14,
-            os.qtditem15, os.houveparada, os.manutentor, os.finalizada, os.datahorainicio
+            os.qtditem15, os.houveparada, os.manutentor, os.finalizada, os.datahorainicio,
+            os.manutentor2,os.manutentor3
         ])
     output = make_response(si.getvalue())
     output.headers["Content-Disposition"] = "attachment; filename=export.csv"
     output.headers["Content-type"] = "text/csv"
     
     return output
+
+
+
+def testesDeVariaveis(a,b):
+    print(a)
+    print(b)

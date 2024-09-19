@@ -1,4 +1,4 @@
-inicio fim trabalho  (tempo execucao) (+ - ok precisa validar)
+inicio fim trabalho  (tempo execucao) (+ - ok precisa validar) ok
 para encerrar visualizar + por o que foi feito (ok)
 custo (?)
 gestão estoque (tentar por aviso por e-mail)
@@ -10,6 +10,8 @@ por questão de prazo ( ver com Luanna Parametros), prazo entra na lista  ( praz
 imprimir as os  ok
 colocar bloqueio de usuario logado ok
 separar arquivos ok
-Preciso (esqueci)
-Colocar mais pessoas para fechar manutenção;
+Preciso criar tabela de estoque
+cadastro de estoque(entrada)
+Colocar mais pessoas para fechar manutenção; ok
 Lista por setores om opção outros para possiveis serviços sem tag;
+corrigir a questão do nome de usuario no fechamento de os e na exportação de dados;

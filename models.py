@@ -48,6 +48,8 @@ class Tabelaos(db.Model):
     manutentor = db.Column(db.String(100))
     finalizada = db.Column(db.String(1))
     datahorainicio= db.Column(db.String(20))
+    manutentor2 = db.Column(db.String(100))
+    manutentor3 = db.Column(db.String(100))
     def __repr__(self):
         return '<Name %r>' %self.name
     
