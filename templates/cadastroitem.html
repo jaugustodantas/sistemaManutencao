@@ -1,0 +1,23 @@
+{% extends"padrao.html" %}
+{% block conteudo %}
+
+
+<form method="post" action="/envioitem">       
+    <fieldset>
+        <legend>Cadastro Item</legend>
+        <div class="mb-3">
+            {{form.nomeDoItem.label}}
+            {{form.nomeDoItem(class="form-control")}}
+        </div>
+        <div class="mb-3">
+            {{form.quantidade.label}}
+            {{form.quantidade(class="form-control")}}
+        </div>
+        <div class="mb-3">
+            {{form.codigoDoItem.label}}
+            {{form.codigoDoItem(class="form-control")}}
+        </div>
+            {{form.enviar(class="btn btn-primary")}}
+    </fieldset>
+</form>
+{% endblock %}

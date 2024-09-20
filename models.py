@@ -62,3 +62,11 @@ class Usuarios(db.Model):
     nome = db.Column(db.String(50))
     def __repr__(self):
         return '<Name %r>' %self.name
+    
+class Estoquemanutencao(db.Model):
+    id = db.Column(db.Integer,primary_key= True,autoincrement = True)
+    nome_item= db.Column(db.String(50))
+    qtd = db.Column(db.Integer)
+    codigo = db.Column(db.String(50))
+    def __repr__(self):
+        return '<Name %r>' %self.name

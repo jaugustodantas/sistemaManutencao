@@ -8,7 +8,7 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-            <a class="navbar-brand">Aprendendo</a>
+            <a class="navbar-brand">Sistema Manutenção</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -23,6 +23,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/listaos">Lista das OS</a>
                 </li>
+                {%if session.get('cargo') == 'Manutentor' or session.get('cargo') == 'Gestor'%}
+                <li class="nav-item"></li>
+                    <a class="nav-link" href="/listaestoque">Estoque</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cadastaritem">Cadastrar Item</a>
+                </li>
+                {%endif%}
                 {%if session.get('cargo') == 'Gestor'%}
                 <li class="nav-item">
                     <a class="nav-link" href="/cadastro">Cadastrar Usuario</a>

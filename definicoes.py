@@ -17,3 +17,9 @@ class FormularioFecharOs(FlaskForm):
     manutentor2 = StringField('Manutentor 2',[validators.data_required()])
     manutentor3 = StringField('Manutentor 3')
     enviar = SubmitField('Enviar')
+
+class FomularioEstoque(FlaskForm):
+    nomeDoItem = StringField('Nome do item',[validators.data_required()])
+    quantidade = StringField('Quantidade do item',[validators.data_required()])
+    codigoDoItem = StringField('Código do item')
+    enviar = SubmitField('Enviar')

@@ -1,10 +1,10 @@
 from flask import render_template,redirect,request,session,url_for,make_response,flash
-from models import Usuarios,Tabelaos
+from models import Usuarios,Tabelaos,Estoquemanutencao
 from datetime import datetime
 from novo import app,db
 import csv
 from io import StringIO
-from definicoes import FormularioAbriOs,FormularioFecharOs
+from definicoes import FormularioAbriOs,FormularioFecharOs,FomularioEstoque
 #relacao login ----------------------------------------------------------------------------
 def testeUsuario():
     if 'username' not in session or session['username'] == None:
@@ -47,7 +47,8 @@ def registroUsuarioDb ():
     nome = request.form["txtNome"]    #coletar a senha do campo de confirmação para garantir que são iguais
     testeRepetido = Usuarios.query.filter_by(email=eemail).first()
     if testeRepetido:
-        return render_template('usuariojaexiste.html')
+        flash('Já existe um usuário com esse e-mail cadastrado','error')
+        return redirect('/cadastro')
     
     novoUsuario = Usuarios(email=eemail,cargo=cargo,senha=senha,nome=nome)
     db.session.add(novoUsuario)
@@ -126,16 +127,14 @@ def enumeraros():
 
 @app.route('/vizualizar/<int:idv>/<int:modo>')
 def vizualizar_os(idv,modo):
-    
+    searchos = Tabelaos.query.filter_by(id=idv).first()
+    idbusr = searchos.emissor
+    usuariosearch = Usuarios.query.filter_by(id=idbusr).first()
     if modo == 1:
-        searchos = Tabelaos.query.filter_by(id=idv).first()
-        idbusr = searchos.emissor
-        usuariosearch = Usuarios.query.filter_by(id=idbusr).first()
         return render_template ('visualizaros.html', os=searchos, usr=usuariosearch)
     elif modo == 2:
-        searchos = Tabelaos.query.filter_by(id=idv).first()
         form = FormularioFecharOs()
-        return render_template ('fecharos.html',form=form, os=searchos)
+        return render_template ('fecharos.html',form=form, os=searchos,usr=usuariosearch)
 
 @app.route('/fecharos', methods =["POST",])
 def submit_form():
@@ -167,7 +166,7 @@ def submit_form():
             return redirect('/listaos')
         a = a.strftime("%d/%m/%Y %H:%M")
         b = b.strftime("%d/%m/%Y %H:%M")
-        testesDeVariaveis(a,b)
+#        testesDeVariaveis(a,b)
         osFinalizada.datahorainicio = a
         osFinalizada.datahoraexecucao = b
         osFinalizada.manutentor = formFinalizar.manutentor1.data
@@ -204,9 +203,31 @@ def exportarTabela():
     output.headers["Content-type"] = "text/csv"
     
     return output
+#--------------------------------------------------------------
+#-------@app.route('/cadastro')
+@app.route('/listaestoque')
+def enumerarestoque():
+    if testeUsuario():
+        listaitem = Estoquemanutencao.query.order_by(Estoquemanutencao.id)
+        return render_template('listadeestoque.html',itens=listaitem)
 
-
-
-def testesDeVariaveis(a,b):
-    print(a)
-    print(b)
+@app.route('/cadastaritem')
+def cadastroItem():
+    if testeUsuario():
+        form = FomularioEstoque()
+        return render_template('cadastroitem.html',form=form)
+    
+@app.route('/envioitem',methods=["POST",])
+def enviarNovoItem():
+    formEnvio = FomularioEstoque(request.form)
+   # if formEnvio.validate_on_submit():
+    nome = formEnvio.nomeDoItem.data
+    qtd = formEnvio.quantidade.data
+    codigo = formEnvio.codigoDoItem.data
+    novoItem = Estoquemanutencao(nome_item=nome,qtd=qtd,codigo=codigo)
+    db.session.add(novoItem)
+    db.session.commit()
+    flash('Item cadastrado com sucesso','success')
+    return redirect('/listaos')
+    #flash('Houve algum error durante o cadastro de item','error')
+    #return redirect('/listaos')
