@@ -1,16 +1,22 @@
-from flask import Flask, render_template,redirect,request,session,url_for,make_response
+from flask import Flask
 import webbrowser
-from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
-import csv
-from io import StringIO
-
+from extensoes import db
+from loginrota import login_bp 
+from ordens import ordens_bp
+from exportacao import exp_bp
+from pessoas import pessoa_bp
+from estoque import estoque_bp
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-db= SQLAlchemy(app)
+
+db.__init__(app)
+app.register_blueprint(login_bp)
+app.register_blueprint(ordens_bp)
+app.register_blueprint(exp_bp)
+app.register_blueprint(pessoa_bp)
+app.register_blueprint(estoque_bp)
 
 
-from views import *    
 
 
 if __name__ == '__main__':

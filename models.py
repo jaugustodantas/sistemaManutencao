@@ -1,4 +1,4 @@
-from novo import db
+from extensoes import db
 
 class Tabelaos(db.Model):
     id = db.Column(db.Integer,primary_key = True,autoincrement=True)
@@ -49,9 +49,9 @@ class Tabelaos(db.Model):
     datahorainicio= db.Column(db.String(20))
     manutentor2 = db.Column(db.String(100))
     manutentor3 = db.Column(db.String(100))
-    id_usuario = db.Column(db.Integer,db.ForeignKey('usuarios.id'))
+    id_usuario = db.Column(db.Integer,db.ForeignKey("usuarios.id"))
 
-    usuario = db.relationship('Usuarios')
+    usuario = db.relationship('Usuarios',backref="ordens_servico",lazy=True)
     def __repr__(self):
         return '<Name %r>' %self.name
     

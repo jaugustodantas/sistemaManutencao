@@ -22,9 +22,9 @@
             <td>{{item.setor}}</td>
             <td>{{item.nivelurgencia}}</td>
             <td>{{item.motivourgencia}}</td>
-            <td><a href="{{url_for('vizualizar_os',idv = item.id,modo = 1)}}">Visualizar</a></td>
+            <td><a href="{{url_for('ordens.vizualizar_os',idv = item.id,modo = 1)}}">Visualizar</a></td>
             {% if session.get('cargo') == 'Gestor' or session.get('cargo') == 'Manutentor' %}
-            <td><a href="{{url_for('vizualizar_os',idv = item.id,modo = 2)}}">Encerrar</a></td>
+            <td><a href="{{url_for('ordens.vizualizar_os',idv = item.id,modo = 2)}}">Encerrar</a></td>
             {% endif %}
             <!-- <td><a href="">Encerrar</a></td> -->
         </tr>

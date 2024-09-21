@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators,DateTimeField,SubmitField,TextAreaField
+from wtforms import StringField, validators,DateTimeField,SubmitField,TextAreaField,IntegerField
 from datetime import datetime
 
 class FormularioAbriOs(FlaskForm):
@@ -21,5 +21,5 @@ class FormularioFecharOs(FlaskForm):
 class FomularioEstoque(FlaskForm):
     nomeDoItem = StringField('Nome do item',[validators.data_required()])
     quantidade = StringField('Quantidade do item',[validators.data_required()])
-    codigoDoItem = StringField('Código do item')
+    codigoDoItem = StringField('Código do item',[validators.data_required()])
     enviar = SubmitField('Enviar')

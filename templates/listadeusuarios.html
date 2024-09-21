@@ -20,8 +20,8 @@
             <td>{{usr.email}}</td>
             <td>{{usr.cargo}}</td>
             <td>{{usr.nome}}</td>
-            <td><a href="{{url_for('vizualizar_usr',idv = usr.id,modo = 1)}}">Excluir</a></td>
-            <td><a href="{{url_for('vizualizar_usr',idv = usr.id,modo = 2)}}">Editar</a></td>
+            <td><a href="{{url_for('pessoas.vizualizar_usr',idv = usr.id,modo = 1)}}">Excluir</a></td>
+            <td><a href="{{url_for('pessoas.vizualizar_usr',idv = usr.id,modo = 2)}}">Editar</a></td>
             <!-- <td><a href="">Encerrar</a></td> -->
         </tr>
         {% endfor %}
