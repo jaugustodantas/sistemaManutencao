@@ -6,7 +6,6 @@ class Tabelaos(db.Model):
     setor = db.Column(db.String(100))
     datahoraabertura = db.Column(db.String(20))
     maquina = db.Column(db.String(100))
-    emissor = db.Column(db.String(100))
     nivelurgencia = db.Column(db.Text)
     motivourgencia = db.Column(db.Text)
     tipo = db.Column(db.String(30))
@@ -50,6 +49,9 @@ class Tabelaos(db.Model):
     datahorainicio= db.Column(db.String(20))
     manutentor2 = db.Column(db.String(100))
     manutentor3 = db.Column(db.String(100))
+    id_usuario = db.Column(db.Integer,db.ForeignKey('usuarios.id'))
+
+    usuario = db.relationship('Usuarios')
     def __repr__(self):
         return '<Name %r>' %self.name
     

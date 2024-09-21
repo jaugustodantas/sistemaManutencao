@@ -220,14 +220,14 @@ def cadastroItem():
 @app.route('/envioitem',methods=["POST",])
 def enviarNovoItem():
     formEnvio = FomularioEstoque(request.form)
-   # if formEnvio.validate_on_submit():
-    nome = formEnvio.nomeDoItem.data
-    qtd = formEnvio.quantidade.data
-    codigo = formEnvio.codigoDoItem.data
-    novoItem = Estoquemanutencao(nome_item=nome,qtd=qtd,codigo=codigo)
-    db.session.add(novoItem)
-    db.session.commit()
-    flash('Item cadastrado com sucesso','success')
-    return redirect('/listaos')
+    if formEnvio.validate_on_submit():
+        nome = formEnvio.nomeDoItem.data
+        qtd = formEnvio.quantidade.data
+        codigo = formEnvio.codigoDoItem.data
+        novoItem = Estoquemanutencao(nome_item=nome,qtd=qtd,codigo=codigo)
+        db.session.add(novoItem)
+        db.session.commit()
+        flash('Item cadastrado com sucesso','success')
+        return redirect('/listaos')
     #flash('Houve algum error durante o cadastro de item','error')
     #return redirect('/listaos')
